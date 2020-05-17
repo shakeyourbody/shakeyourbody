@@ -8,10 +8,10 @@ You can run the project by opening the `src` folder in the processing editor and
 
 ### Running from the CLI
 
-If you prefer to use another IDE there is a file `run.sh` which will run the project for you.
+If you prefer to use another IDE there is a file `scripts/run.sh` which will run the project for you.
 
 ``` bash
-$ ./run.sh src/src.pyde
+$ ./scripts/run.sh src/src.pyde
 ```
 
 It works only on Linux (and probably on Unix), soon or later I'll add a Windows version.
