@@ -4,6 +4,10 @@
 
 
 
++ [Dev docs](./docs/README.md)
+
+
+
 ## Design
 
 Everybody loves to dance. But with the current situation, dancing with our friends isn't really good practice. So what about making dance alone (even more) funny? That's the plan: we play the music, we plan the moves, you dance. Sounds pretty cool, doesn't it?
