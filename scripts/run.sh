@@ -42,3 +42,6 @@ TARGET=$1
 # Run the python target
 echo "Running $TARGET"
 $JAVA -Xms512m -Xmx1024m -jar $PROCESSING $TARGET
+
+# Remove .class files
+rm src/*.class
