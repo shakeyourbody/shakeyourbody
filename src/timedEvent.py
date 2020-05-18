@@ -50,6 +50,9 @@ class Pool:
         if self._runner is not None:
             self._runner.join()
 
+    def clear(self):
+        self.EVENTS = []
+
     def runner(self):
         self.running = True
         index = 0
