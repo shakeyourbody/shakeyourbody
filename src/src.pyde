@@ -1,7 +1,14 @@
-from timedStream import TimedStream, csv
+from timedEvent import Event, Pool, Frame
+import csv
+from random import randint
 import time
 
-t = TimedStream(0)
+f = Frame(0)
+p = Pool()
+
+
+def cbk(v):
+    return lambda f: f.set(v)
 
 
 def setup():
@@ -10,15 +17,14 @@ def setup():
     with open('data/colors.csv') as colors:
         reader = csv.reader(colors, delimiter=',')
         for timestamp, scale in reader:
-            t.at(float(timestamp), float(scale))
+            p.at(float(timestamp), Frame.cbk(float(scale)), f)
 
-    t.start()
+    p.start()
 
 
 def draw():
-    bc = t()
-    background(bc)
-    if (len(t) <= 0):
-        delay(1000)
-        t.stop()
-        exit()
+    background(f.v)
+
+
+def stop():
+    p.stop()
