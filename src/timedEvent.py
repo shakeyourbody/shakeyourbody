@@ -35,9 +35,12 @@ class Pool:
         self.running = False
         self._runner = None
 
+        self.NOTIFICATIONS = dict()
+        self.NOTIFICATIONS['start'] = None
+        self.NOTIFICATIONS['end'] = None
+
     def at(self, timestamp, cbk, *args):
         self.EVENTS.append((timestamp, cbk, args))
-        return self
 
     def start(self):
         self.EVENTS.sort(key=lambda e: e[0], reverse=False)
@@ -51,17 +54,25 @@ class Pool:
 
     def runner(self):
         self.running = True
-        self.TINIT = time()
         index = 0
+        self.TINIT = time()
+        self._notify('start')
         while len(self.EVENTS) > index and self.running:
             elapsed = time() - self.TINIT
             if elapsed >= self.EVENTS[index][0]:
                 self.EVENTS[index][1](*self.EVENTS[index][2])
-                print(self.EVENTS[index][0])
                 index += 1
+        self._notify('end')
         self.TINIT = -1
         self.running = False
         self._runner = None
+
+    def on(self, n, cbk):
+        self.NOTIFICATIONS[n] = cbk
+
+    def _notify(self, n):
+        if self.NOTIFICATIONS[n] is not None:
+            self.NOTIFICATIONS[n]()
 
 
 class Frame:
