@@ -36,8 +36,6 @@ class Pool:
         self._runner = None
 
         self.NOTIFICATIONS = dict()
-        self.NOTIFICATIONS['start'] = None
-        self.NOTIFICATIONS['end'] = None
 
     def at(self, timestamp, cbk, *args):
         self.EVENTS.append((timestamp, cbk, args))
@@ -71,7 +69,7 @@ class Pool:
         self.NOTIFICATIONS[n] = cbk
 
     def _notify(self, n):
-        if self.NOTIFICATIONS[n] is not None:
+        if n in self.NOTIFICATIONS and self.NOTIFICATIONS[n]:
             self.NOTIFICATIONS[n]()
 
 
