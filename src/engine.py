@@ -1,4 +1,4 @@
-from timedEvent import Pool, animate
+from timedEvent import Pool, animate, delayed
 from fake_pose import Pose
 from drawables import Circle, Line, Text
 from utils import Point
@@ -54,15 +54,11 @@ class Engine:
             db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
             print(da, db)
 
+    @delayed(TIMETOJUMP)
     def _end_handler(self):
-        @ thread
-        def cbk():
-            delay(1000)
-            self.running = False
-            self._dmap = dict()
-            self._dbuffer = [
-                Text('END!', width/2, height/2)
-            ]
+        self.running = False
+        self._dmap = dict()
+        self._dbuffer = [Text('END!', width/2, height/2)]
 
     def tick(self):
         if not self.running:

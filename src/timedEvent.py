@@ -28,6 +28,14 @@ class Event:
                 self.running = False
 
 
+def delayed(timestamp):
+    def wrapper(cbk):
+        def caller(*args):
+            Event(timestamp, cbk, *args).start()
+        return caller
+    return wrapper
+
+
 class Pool:
 
     def __init__(self):
