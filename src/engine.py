@@ -1,6 +1,8 @@
-from timedEvent import Pool, Frame, Event
+from timedEvent import Pool
 from fake_pose import Pose
 from drawables import Circle, Line, Text
+from utils import Point
+
 from time import time
 import csv
 import math
@@ -12,73 +14,76 @@ class Engine:
 
         self.running = False
 
-        self.p = Pool()
-        self.poses = Pose()
+        self.pool = Pool()
+        self.pose = Pose()
 
-        self._dobj = []
-        self._objs = dict()
+        self.TIMETOJUMP = 1
+
+        self._dbuffer = []
+        self._dmap = dict()
 
     def start(self):
-        self.p.clear()
-        with open('data/moves.csv') as colors:
-            reader = csv.reader(colors, delimiter=',')
-            for timestamp, x1, y1, x2, y2 in reader:
-                self.p.at(float(timestamp) - 1, self._handle,
-                          float(x1), float(y1), float(x2), float(y2))
-        self.p.on('end', self.end)
-        self.p.start()
+
+        self.pool.clear()
+        with open('data/moves.csv') as moves:
+            reader = csv.reader(moves, delimiter=',')
+            for timestamp, xa, ya, xb, yb in reader:
+                self.pool.at(
+                    float(timestamp) - self.TIMETOJUMP, self._handler,
+                    Point(float(xa), float(ya)), Point(float(xb), float(yb))
+                )
+        self.pool.on('end', self._end_handler)
+        self.pool.start()
+
         self.running = True
 
-    def _handle(self, x1, y1, x2, y2):
-        ha, hb = self.poses.pose()
+    def _handler(self, ea, eb):
+        ra, rb = self.pose.pose()
 
         @thread
-        def cbk():
+        def animate():
             start = time()
-            while time() - start < 1 and self.running:
-                self._objs = {
-                    'a': Circle(x1, y1, 20 - (time() - start)
-                                * 18).fill(255, 0, 0),
-                    'b': Circle(x2, y2, 20 - (time() - start)
-                                * 18).fill(255, 0, 0),
+            while time() - start < self.TIMETOJUMP and self.running:
+                self._dmap = {
+                    'a': Circle(ea.x, ea.y, 20 - (time() - start) * 20).fill(255, 0, 0),
+                    'b': Circle(eb.x, eb.y, 20 - (time() - start) * 20).fill(255, 0, 0)
                 }
-            da = math.sqrt((x1-ha[0])**2 + (y1-ha[1])**2)
-            db = math.sqrt((x2-hb[0])**2 + (y2-hb[1])**2)
+            da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
+            db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
             print(da, db)
-            self._objs = dict()
+
+    def _end_handler(self):
+        @thread
+        def cbk():
+            delay(1000)
+            self.running = False
+            self._dmap = dict()
+            self._dbuffer = [
+                Text('END!', width/2, height/2)
+            ]
 
     def tick(self):
         if not self.running:
             return
 
-        ha, hb = self.poses.pose()
+        self._dbuffer = []
+        self._dmap = dict()
 
-        self._dobj = [
-            Circle(ha[0], ha[1], 10),
-            Circle(hb[0], hb[1], 10),
+        a, b = self.pose.pose()
+        self._dbuffer = [
+            Circle(a.x, a.y, 10),
+            Circle(b.x, b.y, 10)
         ]
 
-        if 'a' in self._objs and 'b' in self._objs:
-            self._dobj += [
-                Line(ha, (self._objs['a'].x, self._objs['a'].y)).stroke(
-                    255, 255, 255, 100),
-                Line(hb, (self._objs['b'].x, self._objs['b'].y)).stroke(
-                    255, 255, 255, 100)
+        if 'a' in self._dmap and 'b' in self._dmap:
+            self._dbuffer += [
+                Line(a, (self._dmap['a'].x, self._dmap['a'].y)),
+                Line(b, (self._dmap['b'].x, self._dmap['b'].y))
             ]
 
     def draw(self):
-        background(0)
-        for key in self._objs:
-            self._objs[key].draw()
-        for el in self._dobj:
-            el.draw()
+        for obj in self._dbuffer:
+            obj.draw()
 
-    def end(self):
-        @thread
-        def cbk():
-            delay(1000)
-            self.running = False
-            self._objs = dict()
-            self._dobj = [
-                Text('END!', width/2, height/2)
-            ]
+        for key in self._dmap:
+            self._dmap[key].draw()

@@ -39,6 +39,8 @@ class Line(Drawable):
         self.a = a
         self.b = b
 
+        self.stroke(255, 255, 255, 100)
+
     def onDraw(self):
         line(self.a[0], self.a[1], self.b[0], self.b[1])
 

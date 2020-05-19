@@ -11,9 +11,10 @@ def setup():
 
 
 def draw():
+    background(0)
     e.tick()
     e.draw()
 
 
 def stop():
-    e.p.stop()
+    e.pool.stop()

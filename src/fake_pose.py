@@ -1,3 +1,6 @@
+from utils import Point
+
+
 class Pose:
 
     def __init__(self):
@@ -10,5 +13,5 @@ class Pose:
 
     def pose(self):
         self.off += self.stepLenght
-        return ((noise(self.off, self.A, self.X) * width, noise(self.off, self.A, self.Y) * height),
-                (noise(self.off, self.B, self.X) * width, noise(self.off, self.B, self.Y) * height))
+        return (Point(noise(self.off, self.A, self.X) * width, noise(self.off, self.A, self.Y) * height),
+                Point(noise(self.off, self.B, self.X) * width, noise(self.off, self.B, self.Y) * height))
