@@ -1,4 +1,4 @@
-from timedEvent import Pool
+from timedEvent import Pool, animate
 from fake_pose import Pose
 from drawables import Circle, Line, Text
 from utils import Point
@@ -10,14 +10,14 @@ import math
 
 class Engine:
 
+    TIMETOJUMP = 1
+
     def __init__(self):
 
         self.running = False
 
         self.pool = Pool()
         self.pose = Pose()
-
-        self.TIMETOJUMP = 1
 
         self._dbuffer = []
         self._dmap = dict()
@@ -37,23 +37,25 @@ class Engine:
 
         self.running = True
 
-    def _handler(self, ea, eb):
+    @animate(TIMETOJUMP)
+    def _handler(self, events, ea, eb):
         ra, rb = self.pose.pose()
 
-        @thread
-        def animate():
-            start = time()
-            while time() - start < self.TIMETOJUMP and self.running:
-                self._dmap = {
-                    'a': Circle(ea.x, ea.y, 20 - (time() - start) * 20).fill(255, 0, 0),
-                    'b': Circle(eb.x, eb.y, 20 - (time() - start) * 20).fill(255, 0, 0)
-                }
+        @ events.animation
+        def on_animation(elapsed):
+            self._dmap = {
+                'a': Circle(ea.x, ea.y, 20 - elapsed * 20).fill(255, 0, 0),
+                'b': Circle(eb.x, eb.y, 20 - elapsed * 20).fill(255, 0, 0)
+            }
+
+        @ events.end
+        def on_end():
             da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
             db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
             print(da, db)
 
     def _end_handler(self):
-        @thread
+        @ thread
         def cbk():
             delay(1000)
             self.running = False

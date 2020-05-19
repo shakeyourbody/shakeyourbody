@@ -1,5 +1,6 @@
 from threading import Thread
 from time import time
+from collections import namedtuple
 
 
 class Event:
@@ -87,3 +88,34 @@ class Frame:
 
     def set(self, v):
         self.v = v
+
+
+def run_safe(f, *args):
+    if callable(f):
+        f(*args)
+
+
+def animate(length):
+    on_end = Frame()
+    on_animation = Frame()
+
+    def set_end(end):
+        on_end.set(end)
+
+    def set_animation(animation):
+        on_animation.set(animation)
+
+    caller = namedtuple('Caller', ['animation', 'end'])
+
+    def wrapper(setter):
+        def animator(self=None, *args, **kwargs):
+            setter(self, caller(set_animation, set_end), *args, **kwargs)
+            start = time()
+            elapsed = 0
+            while elapsed < length:
+                run_safe(on_animation.v, elapsed)
+                elapsed = time() - start
+            run_safe(on_end.v)
+        return animator
+
+    return wrapper
