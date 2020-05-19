@@ -1,3 +1,4 @@
 /lib
 /src/*.class
 /src/libraries
+__pycache__

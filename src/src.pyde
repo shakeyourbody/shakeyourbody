@@ -11,7 +11,7 @@ def setup():
 
 
 def draw():
-    background(0)
+    e.tick()
     e.draw()
 
 
