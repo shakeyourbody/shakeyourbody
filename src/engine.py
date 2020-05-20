@@ -32,7 +32,7 @@ class Engine:
                     float(timestamp) - self.TIMETOJUMP, self._handler,
                     Point(float(xa), float(ya)), Point(float(xb), float(yb))
                 )
-        self.pool.on('end', self._end_handler)
+        self.pool.on('end:ok', self._end_handler)
         self.pool.start()
 
         self.running = True

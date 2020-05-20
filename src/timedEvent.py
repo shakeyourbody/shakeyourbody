@@ -73,6 +73,7 @@ class Pool:
                 self.EVENTS[index][1](*self.EVENTS[index][2])
                 index += 1
         self._notify('end')
+        self._notify('end:ok' if self.running else 'end:notOk')
         self.TINIT = -1
         self.running = False
         self._runner = None
