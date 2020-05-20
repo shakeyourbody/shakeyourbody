@@ -41,10 +41,7 @@ class Engine:
     def _handler(self, events, ea, eb):
         ra, rb = self.pose.pose()
 
-        @events.run_condition
-        def run_condition():
-            print(self.running)
-            return self.running
+        events.run_condition(lambda: self.running)
 
         @events.animation
         def on_animation(elapsed):
@@ -54,10 +51,11 @@ class Engine:
             }
 
         @events.end
-        def on_end():
-            da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
-            db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
-            print(da, db)
+        def on_end(ok):
+            if ok:
+                da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
+                db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
+                print(da, db)
 
     @delayed(TIMETOJUMP)
     def _end_handler(self):
@@ -83,6 +81,10 @@ class Engine:
                 Line(a, (self._dmap['a'].x, self._dmap['a'].y)),
                 Line(b, (self._dmap['b'].x, self._dmap['b'].y))
             ]
+
+    def stop(self):
+        self.running = False
+        self.pool.stop()
 
     def draw(self):
         for obj in self._dbuffer:

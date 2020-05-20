@@ -17,4 +17,4 @@ def draw():
 
 
 def stop():
-    e.pool.stop()
+    e.stop()

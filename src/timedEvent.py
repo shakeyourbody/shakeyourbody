@@ -101,6 +101,7 @@ class Frame:
 def run_safe(f, *args):
     if callable(f):
         return f(*args)
+    print('NOP')
 
 
 def animate(length):
@@ -128,7 +129,7 @@ def animate(length):
             while run_safe(run_condition.v) and elapsed < length:
                 run_safe(on_animation.v, elapsed)
                 elapsed = time() - start
-            run_safe(on_end.v)
+            run_safe(on_end.v, elapsed - length == 0)
         return animator
 
     return wrapper
