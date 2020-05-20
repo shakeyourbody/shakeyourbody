@@ -41,7 +41,7 @@ class Engine:
     def _handler(self, events, ea, eb):
         ra, rb = self.pose.pose()
 
-        events.run_condition(lambda: self.running)
+        events.loop_if(lambda: self.running)
 
         @events.animation
         def on_animation(elapsed):
@@ -50,12 +50,11 @@ class Engine:
                 'b': Circle(eb.x, eb.y, 20 - elapsed * 20).fill(0, 255, 0)
             }
 
-        @events.end
-        def on_end(ok):
-            if ok:
-                da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
-                db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
-                print(da, db)
+        @events.then
+        def on_end():
+            da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
+            db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
+            print(da, db)
 
     @delayed(TIMETOJUMP)
     def _end_handler(self):
