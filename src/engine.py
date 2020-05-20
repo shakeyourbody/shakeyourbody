@@ -41,14 +41,19 @@ class Engine:
     def _handler(self, events, ea, eb):
         ra, rb = self.pose.pose()
 
-        @ events.animation
+        @events.run_condition
+        def run_condition():
+            print(self.running)
+            return self.running
+
+        @events.animation
         def on_animation(elapsed):
             self._dmap = {
                 'a': Circle(ea.x, ea.y, 20 - elapsed * 20).fill(255, 0, 0),
                 'b': Circle(eb.x, eb.y, 20 - elapsed * 20).fill(255, 0, 0)
             }
 
-        @ events.end
+        @events.end
         def on_end():
             da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
             db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)

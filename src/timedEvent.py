@@ -100,12 +100,13 @@ class Frame:
 
 def run_safe(f, *args):
     if callable(f):
-        f(*args)
+        return f(*args)
 
 
 def animate(length):
     on_end = Frame()
     on_animation = Frame()
+    run_condition = Frame()
 
     def set_end(end):
         on_end.set(end)
@@ -113,14 +114,18 @@ def animate(length):
     def set_animation(animation):
         on_animation.set(animation)
 
-    caller = namedtuple('Caller', ['animation', 'end'])
+    def set_run_condition(condition):
+        run_condition.set(condition)
+
+    caller = namedtuple('Caller', ['animation', 'end', 'run_condition'])
 
     def wrapper(setter):
         def animator(self=None, *args, **kwargs):
-            setter(self, caller(set_animation, set_end), *args, **kwargs)
+            setter(self, caller(set_animation, set_end,
+                                set_run_condition), *args, **kwargs)
             start = time()
             elapsed = 0
-            while elapsed < length:
+            while run_safe(run_condition.v) and elapsed < length:
                 run_safe(on_animation.v, elapsed)
                 elapsed = time() - start
             run_safe(on_end.v)
