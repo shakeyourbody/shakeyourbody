@@ -46,8 +46,8 @@ class Engine:
         @events.animation
         def on_animation(elapsed):
             self._dmap = {
-                'a': Circle(ea.x, ea.y, 20 - elapsed * 20).fill(255, 0, 0),
-                'b': Circle(eb.x, eb.y, 20 - elapsed * 20).fill(255, 0, 0)
+                'a': Circle(ea.x, ea.y, 20 - elapsed * 20).fill(0, 255, 0),
+                'b': Circle(eb.x, eb.y, 20 - elapsed * 20).fill(0, 255, 0)
             }
 
         @events.end
@@ -72,8 +72,8 @@ class Engine:
 
         a, b = self.pose.pose()
         self._dbuffer = [
-            Circle(a.x, a.y, 10),
-            Circle(b.x, b.y, 10)
+            Circle(a.x, a.y, 10).fill(255, 0, 0),
+            Circle(b.x, b.y, 10).fill(255, 0, 0)
         ]
 
         if 'a' in self._dmap and 'b' in self._dmap:
