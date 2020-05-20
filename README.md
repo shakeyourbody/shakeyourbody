@@ -6,6 +6,7 @@
 
 + [Dev docs](./docs/docs.md)
 + [Dev roadmap](docs/roadmap.md)
++ [Theoretical representation](docs/engine.md)
 
 
 
