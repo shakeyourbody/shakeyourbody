@@ -1,6 +1,7 @@
 from threading import Thread
 from time import time
 from collections import namedtuple
+from utils import run_safe
 
 
 class Event:
@@ -23,8 +24,7 @@ class Event:
         while self.running:
             elapsed = time() - start
             if self.TIMESTAMP is not None and elapsed >= self.TIMESTAMP:
-                if self.CBK is not None:
-                    self.CBK(*self.ARGS)
+                run_safe(self.CBK(*self.ARGS))
                 self.running = False
 
 
@@ -83,7 +83,7 @@ class Pool:
 
     def _notify(self, n):
         if n in self.NOTIFICATIONS and self.NOTIFICATIONS[n]:
-            self.NOTIFICATIONS[n]()
+            run_safe(self.NOTIFICATIONS[n])
 
 
 class Frame:
@@ -97,12 +97,6 @@ class Frame:
 
     def set(self, v):
         self.v = v
-
-
-def run_safe(f, *args):
-    if callable(f):
-        return f(*args)
-    print('NOP')
 
 
 def animate(length):
