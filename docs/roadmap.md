@@ -1,13 +1,11 @@
 # DEV Roadmap
 
-### 16.5 Plan & setup
+### 19.5 Engine
 
-- decide the goal of the project
-- setup the Processing environment
-
-### 17.5 CLI script
-
-- make the python processing mode run under the Linux shell
+- slowly polishing the engine
+- implemented fake camera inputs with perlin noise
+- little gui improvements
+- difference between expected and "real" hands position
 
 ### 18.5 Explorations
 
@@ -15,12 +13,14 @@
 - csv inputs
 - engine setup
 
-### 19.5 Engine
+### 17.5 CLI script
 
-- slowly polishing the engine
-- implemented fake camera inputs with perlin noise
-- little gui improvements
-- difference between expected and real hands position
+- make the python processing mode run under the Linux shell
+
+### 16.5 Plan & setup
+
+- decide the goal of the project
+- setup the Processing environment
 
 ## TODOs
 
@@ -29,5 +29,5 @@
 - [ ] implement some real time pose detection (openpose)
 - [ ] score system
 - [ ] in-game song editor
-- [ ] extrapolate snog map from dance video, simplifying pose data
+- [ ] extrapolate song map from dance video, simplifying pose data
 
