@@ -9,6 +9,6 @@ By checking the position of the joints of the player in these moments, we can de
 
 
 
-![](imgs/dancer.png)
+![](imgs/skeleton.png)
 
 ![](./imgs/diffs.png)
