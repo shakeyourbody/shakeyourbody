@@ -1,5 +1,9 @@
 # DEV Roadmap
 
+### 21.5 Openpose sockets
+
++ porting openpose socket connection in python
+
 ### 19.5 Engine
 
 - slowly polishing the engine
@@ -27,6 +31,7 @@
 - [ ] implement a real song
 - [ ] make the gui feel nice and polished
 - [ ] implement some real time pose detection (openpose)
+  - [x] port openpose socket connection to python
 - [ ] score system
 - [ ] in-game song editor
 - [ ] extrapolate song map from dance video, simplifying pose data
