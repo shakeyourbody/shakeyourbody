@@ -11,7 +11,7 @@ class Pose:
     IP = '127.0.0.1'
     PORT = 4124
 
-    def __init__(self):
+    def __init__(self, w, h):
 
         self.connection = None
         self.running = False
@@ -19,6 +19,9 @@ class Pose:
 
         self._pose = None
         self._new = False
+
+        self.w = w
+        self.h = h
 
     def connect(self):
 
@@ -40,12 +43,12 @@ class Pose:
                 ])) for j in [0, 4, 8, 12, 16, 20]
             ]
 
-            self._new = True
             self._pose = {
-                'nose': Point(nosex, nosey),
-                'rwrist': Point(rwristx, rwristy),
-                'lwrist': Point(lwristx, lwristy)
+                'nose': Point(self.w - nosex, nosey),
+                'rwrist': Point(self.w - rwristx, rwristy),
+                'lwrist': Point(self.w - lwristx, lwristy)
             }
+            self._new = True
 
     @property
     def pose(self):

@@ -1,17 +1,20 @@
 from engine import Engine
 
-e = Engine()
-
 
 def setup():
-    size(400, 400)
+    size(1280, 720)
     fill(255)
     noStroke()
+
+    global e
+    e = Engine()
     e.start()
 
 
 def draw():
     background(0)
+
+    global e
     e.tick()
     e.draw()
 

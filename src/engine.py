@@ -1,5 +1,6 @@
 from timedEvent import Pool, animate, delayed
-from fake_pose import Pose
+from pose import Pose
+# from fake_pose import Pose
 from drawables import Circle, Line, Text
 from utils import Point
 
@@ -10,51 +11,58 @@ import math
 
 class Engine:
 
-    TIMETOJUMP = 1
+    TIMETOJUMP = 2
 
     def __init__(self):
 
         self.running = False
 
         self.pool = Pool()
-        self.pose = Pose()
+        self.pose = Pose(width, height)
 
         self._dbuffer = []
         self._dmap = dict()
 
     def start(self):
 
+        self.pose.connect()
+
         self.pool.clear()
-        with open('data/moves.csv') as moves:
+        with open('data/poses.csv') as moves:
             reader = csv.reader(moves, delimiter=',')
-            for timestamp, xa, ya, xb, yb in reader:
+            for timestamp, x, y in reader:
                 self.pool.at(
                     float(timestamp) - self.TIMETOJUMP, self._handler,
-                    Point(float(xa), float(ya)), Point(float(xb), float(yb))
+                    Point(float(x) * width, float(y) * height)
                 )
         self.pool.on('end:ok', self._end_handler)
-        self.pool.start()
 
+        self.waitPose()
+
+        self.pool.start()
         self.running = True
 
+    def waitPose(self):
+        while self.pose.pose[0] is None:
+            pass
+
     @animate(TIMETOJUMP)
-    def _handler(self, events, ea, eb):
-        ra, rb = self.pose.pose()
+    def _handler(self, events, kp):
+        coords, _ = self.pose.pose
+        x, y = coords['nose']
 
         events.loop_if(lambda: self.running)
 
         @events.animation
         def on_animation(elapsed):
             self._dmap = {
-                'a': Circle(ea.x, ea.y, 20 - elapsed * 20).fill(0, 255, 0),
-                'b': Circle(eb.x, eb.y, 20 - elapsed * 20).fill(0, 255, 0)
+                'keypoint': Circle(kp.x, kp.y, 40 - elapsed * 40).fill(0, 255, 0),
             }
 
         @events.then
         def on_end():
-            da = math.sqrt((ea.x-ra.x)**2 + (ea.y-ra.y)**2)
-            db = math.sqrt((eb.x-rb.x)**2 + (eb.y-rb.y)**2)
-            print(da, db)
+            delta = math.sqrt((kp.x-x)**2 + (kp.y-y)**2)
+            print(delta)
 
     @delayed(TIMETOJUMP)
     def _end_handler(self):
@@ -69,21 +77,21 @@ class Engine:
         self._dbuffer = []
         self._dmap = dict()
 
-        a, b = self.pose.pose()
+        coords, _ = self.pose.pose
+        x, y = coords['nose']
+
         self._dbuffer = [
-            Circle(a.x, a.y, 10).fill(255, 0, 0),
-            Circle(b.x, b.y, 10).fill(255, 0, 0)
+            Circle(x, y, 20).fill(255, 0, 0)
         ]
 
-        if 'a' in self._dmap and 'b' in self._dmap:
-            self._dbuffer += [
-                Line(a, (self._dmap['a'].x, self._dmap['a'].y)),
-                Line(b, (self._dmap['b'].x, self._dmap['b'].y))
-            ]
+        if 'keypoint' in self._dmap:
+            kp = self._dmap['keypoint']
+            self._dbuffer += [Line((x, y), ((kp.x, kp.y)))]
 
     def stop(self):
         self.running = False
         self.pool.stop()
+        self.pose.stop()
 
     def draw(self):
         for obj in self._dbuffer:

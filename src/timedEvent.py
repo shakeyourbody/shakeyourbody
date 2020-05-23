@@ -56,8 +56,10 @@ class Pool:
 
     def stop(self):
         self.running = False
-        if self._runner is not None:
-            self._runner.join()
+        try:                        # TODO: refactor, dirty
+            self._runner.join()     # should be avoided with some if, but
+        except AttributeError:      # for now it will be ok
+            pass
 
     def clear(self):
         self.EVENTS = []
