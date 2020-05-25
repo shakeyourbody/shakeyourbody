@@ -1,5 +1,13 @@
 # DEV Roadmap
 
+### 25.5 Moves simplification
+
++ simplify camera feed into a reasonable moves set
+
+### 23.5 Nose!
+
++ integrating nose camera feed into the main engine
+
 ### 21.5 Openpose sockets
 
 + porting openpose socket connection in python
@@ -30,9 +38,10 @@
 
 - [ ] implement a real song
 - [ ] make the gui feel nice and polished
-- [ ] implement some real time pose detection (openpose)
+- [x] implement some real time pose detection (openpose)
   - [x] port openpose socket connection to python
 - [ ] score system
 - [ ] in-game song editor
-- [ ] extrapolate song map from dance video, simplifying pose data
+  - [x] simplifying pose data
+- [ ] find a way to handle camera resolution
 
