@@ -18,7 +18,7 @@ class Engine:
         self.running = False
 
         self.pool = Pool()
-        self.pose = Pose(width, height)
+        self.pose = Pose()
 
         self._dbuffer = []
         self._dmap = dict()
@@ -26,6 +26,7 @@ class Engine:
     def start(self):
 
         self.pose.connect()
+        self.pose.mirror(width)
 
         self.pool.clear()
         with open('data/poses.csv') as moves:

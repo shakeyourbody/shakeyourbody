@@ -11,7 +11,7 @@ class Pose:
     IP = '127.0.0.1'
     PORT = 4124
 
-    def __init__(self, w, h):
+    def __init__(self):
 
         self.connection = None
         self.running = False
@@ -20,8 +20,7 @@ class Pose:
         self._pose = None
         self._new = False
 
-        self.w = w
-        self.h = h
+        self.MIRROR = False
 
     def connect(self):
 
@@ -31,6 +30,8 @@ class Pose:
         self.running = True
         self._runner = Thread(target=self.runner)
         self._runner.start()
+
+        return self
 
     def runner(self):
         while self.running:
@@ -44,11 +45,15 @@ class Pose:
             ]
 
             self._pose = {
-                'nose': Point(self.w - nosex, nosey),
-                'rwrist': Point(self.w - rwristx, rwristy),
-                'lwrist': Point(self.w - lwristx, lwristy)
+                'nose': Point(self.W - nosex if self.MIRROR else nosex, nosey),
+                'rwrist': Point(self.W - rwristx if self.MIRROR else rwristx, rwristy),
+                'lwrist': Point(self.W - lwristx if self.MIRROR else lwristx, lwristy)
             }
             self._new = True
+
+    def mirror(self, w=0):
+        self.MIRROR = True
+        self.W = w
 
     @property
     def pose(self):
