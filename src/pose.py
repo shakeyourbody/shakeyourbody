@@ -5,6 +5,61 @@ import socket
 
 from utils import Point, bits2float
 
+# {0,  "Nose"},
+# {1,  "Neck"},
+# {2,  "RShoulder"},
+# {3,  "RElbow"},
+# {4,  "RWrist"},
+# {5,  "LShoulder"},
+# {6,  "LElbow"},
+# {7,  "LWrist"},
+# {8,  "MidHip"},
+# {9,  "RHip"},
+# {10, "RKnee"},
+# {11, "RAnkle"},
+# {12, "LHip"},
+# {13, "LKnee"},
+# {14, "LAnkle"},
+# {15, "REye"},
+# {16, "LEye"},
+# {17, "REar"},
+# {18, "LEar"},
+# {19, "LBigToe"},
+# {20, "LSmallToe"},
+# {21, "LHeel"},
+# {22, "RBigToe"},
+# {23, "RSmallToe"},
+# {24, "RHeel"},
+# {25, "Background"}
+
+pose_map = [
+    "Nose",
+    "Neck",
+    "RShoulder",
+    "RElbow",
+    "RWrist",
+    "LShoulder",
+    "LElbow",
+    "LWrist",
+    "MidHip",
+    "RHip",
+    "RKnee",
+    "RAnkle",
+    "LHip",
+    "LKnee",
+    "LAnkle",
+    "REye",
+    "LEye",
+    "REar",
+    "LEar",
+    "LBigToe",
+    "LSmallToe",
+    "LHeel",
+    "RBigToe",
+    "RSmallToe",
+    "RHeel",
+]
+
 
 class Pose:
 
@@ -36,19 +91,22 @@ class Pose:
     def runner(self):
         while self.running:
 
-            buffer = [ord(b) for b in self.connection.recv(1024)]
+            buffer = [ord(b) for b in self.connection.recv(4096)]
 
-            nosex, nosey, rwristx, rwristy, lwristx, lwristy = [
+            coords = [
                 bits2float(reduce(xor, [
                     (buffer[j+k] & 0xFF) << (8*k) for k in [0, 1, 2, 3]
-                ])) for j in [0, 4, 8, 12, 16, 20]
+                ])) for j in map(lambda x: 4*x, range(len(pose_map)*2))
             ]
 
-            self._pose = {
-                'nose': Point(self.W - nosex if self.MIRROR else nosex, nosey),
-                'rwrist': Point(self.W - rwristx if self.MIRROR else rwristx, rwristy),
-                'lwrist': Point(self.W - lwristx if self.MIRROR else lwristx, lwristy)
-            }
+            coords_zipped = list(zip(coords[0::2], coords[1::2]))
+
+            pose = dict()
+            for i, key in enumerate(pose_map):
+                x, y = coords_zipped[i]
+                pose[key] = Point(x, y)
+
+            self._pose = pose
             self._new = True
 
     def mirror(self, w=0):

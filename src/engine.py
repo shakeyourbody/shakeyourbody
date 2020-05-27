@@ -50,7 +50,7 @@ class Engine:
     @animate(TIMETOJUMP)
     def _handler(self, events, kp):
         coords, _ = self.pose.pose
-        x, y = coords['nose']
+        x, y = coords['Nose']
 
         events.loop_if(lambda: self.running)
 

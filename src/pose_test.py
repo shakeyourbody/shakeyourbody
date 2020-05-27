@@ -1,14 +1,11 @@
 from pose import Pose
-from drawables import Circle, Text
+from drawables import Text
 from time import time
 from timedEvent import Frame
 
 p = Pose()
-c = Circle(1280/2, 720/2, 10)
 
-t = Text('none', 30, 20)
-
-start = Frame(time())
+drawables = []
 
 
 def setup():
@@ -17,19 +14,17 @@ def setup():
 
 
 def draw():
+    global drawables
     background(0)
 
     coords, new = p.pose
     if new:
-        nose = coords['nose']
-        c.x = 1280 - nose.x
-        c.y = nose.y
+        drawables = [Text(key, value.x, value.y)
+                     for key, value in coords.items()
+                     if value.x != 0 and value.y != 0]
 
-        t.s = 1/(time() - start.v)
-        start.set(time())
-
-    c.draw()
-    t.draw()
+    for drawable in drawables:
+        drawable.draw()
 
 
 def stop():
