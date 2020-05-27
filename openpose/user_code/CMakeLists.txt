@@ -7,8 +7,7 @@
 #     ADD_HERE_YOUR_FILEn.cpp)
 set(
     USER_CODE_FILES
-#    socket/UdpSocket.h
-    openpose_webcam.cpp)
+    joints_over_UDP.cpp)
 
 foreach(USER_CODE_FILE ${USER_CODE_FILES})
 
