@@ -1,4 +1,5 @@
 /lib
 /src/*.class
 /src/libraries
+/src/audio
 __pycache__
