@@ -38,3 +38,17 @@ if [[ ! -d "$VIDEO_PATH" ]]; then
     unzip "$LIBS/video.zip" -d "$LIBS"
     rm "$LIBS/video.zip"
 fi
+
+# Audio
+# https://github.com/processing/processing-sound
+AUDIO_RELEASE=https://github.com/processing/processing-sound/releases/download/v2.2.3/sound.zip
+AUDIO_PATH="$LIBS/audio"
+if [[ ! -d "$AUDIO_PATH" ]]; then
+
+    # Download file
+    wget -O "$LIBS/audio.zip" "$AUDIO_RELEASE"
+
+    # Unzip & cleanup
+    unzip "$LIBS/audio.zip" -d "$LIBS"
+    rm "$LIBS/audio.zip"
+fi
