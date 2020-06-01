@@ -46,6 +46,6 @@ class Text(Drawable):
         self.x = x
         self.y = y
 
-    def onDraw(self):
+    def draw(self):
         arcade.draw_text(self.s, self.x, self.y,
                          self._fillv, anchor_x="center")

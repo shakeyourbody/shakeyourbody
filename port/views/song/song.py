@@ -43,7 +43,7 @@ class Song(View):
 
         self.joints_sprites = dict(
             nose=arcade.Sprite(data.DATA_PATH/'graphic' /
-                               'joints'/'nose.png', 0.03)
+                               'sprites'/'nose'/'nose.png', 0.04)
         )
 
     def __keypoint_handler(self, keypoint):
