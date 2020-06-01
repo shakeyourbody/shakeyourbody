@@ -27,7 +27,6 @@ class Song(View):
 
         self.keypoints_spawner = EventsPool()
         self.keypoints = DataPool()
-        self.disposables = DataPool()
 
     def setup(self):
 
@@ -42,7 +41,10 @@ class Song(View):
                     Point(float(x) * self.width, float(y) * self.height)
                 )
 
-        # self.pose.wait()
+        self.joints_sprites = dict(
+            nose=arcade.Sprite(data.DATA_PATH/'graphic' /
+                               'joints'/'nose.png', 0.03)
+        )
 
     def __keypoint_handler(self, keypoint):
         x, y = keypoint
@@ -58,21 +60,19 @@ class Song(View):
         self.keypoints = self.keypoints.filter(
             lambda keypoint: keypoint.update(elapsed))
 
-        self.disposables.clear()
         coords, new = self.pose.pose
-        if coords is None:
+        if coords is None or not new:
             return
-        x, y = coords['Nose']
 
-        self.disposables.append(
-            Circle(self.width - x * self.width, self.height - y *
-                   self.height, 10).fill(120, 120, 120)
-        )
+        x, y = coords['Nose']
+        self.joints_sprites['nose'].center_x = self.width - self.width * x
+        self.joints_sprites['nose'].center_y = self.height - \
+            self.height * y * 2     # TODO: fix camera proportions
 
     def on_draw(self):
         arcade.start_render()
         self.keypoints.each(lambda keypoint: keypoint.draw())
-        self.disposables.each(lambda drawables: drawables.draw())
+        self.joints_sprites['nose'].draw()
 
     def on_key_press(self, key, modifiers):
         if key in mapped:
