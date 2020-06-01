@@ -40,8 +40,8 @@ class Register(View):
             return
 
         x, y = coords['Nose']
-        self.keypoints.append((time() - self.start, x, y))
-        self.dkeypoints.append(Circle(self.width - x * self.width, y *
+        self.keypoints.append((time() - self.start, 1 - x, 1 - y))
+        self.dkeypoints.append(Circle(self.width - x * self.width, self.height - y *
                                       self.height, 5).fill(120, 120, 120))
 
     def on_draw(self):

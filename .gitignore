@@ -3,3 +3,4 @@
 /src/libraries
 /src/audio
 __pycache__
+*.csv

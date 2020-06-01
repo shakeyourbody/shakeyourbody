@@ -65,7 +65,7 @@ class Song(View):
         x, y = coords['Nose']
 
         self.disposables.append(
-            Circle(self.width - x * self.width, y *
+            Circle(self.width - x * self.width, self.height - y *
                    self.height, 10).fill(120, 120, 120)
         )
 

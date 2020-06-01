@@ -44,7 +44,7 @@ def parse_buffer_struct(buffer, joints):
 
 class Pose:
 
-    def __init__(self, WIDTH, HEIGHT, POSE_SET='all'):
+    def __init__(self, WIDTH, HEIGHT, POSE_SET=JOINTS['source']):
 
         self.connection = None
         self.running = False
