@@ -1,0 +1,33 @@
+ip: '127.0.0.1'
+port: 4124
+joints:
+  all:
+    - Nose
+    - Neck
+    - RShoulder
+    - RElbow
+    - RWrist
+    - LShoulder
+    - LElbow
+    - LWrist
+    - MidHip
+    - RHip
+    - RKnee
+    - RAnkle
+    - LHip
+    - LKnee
+    - LAnkle
+    - REye
+    - LEye
+    - REar
+    - LEar
+    - LBigToe
+    - LSmallToe
+    - LHeel
+    - RBigToe
+    - RSmallToe
+    - RHeel
+  v0:
+    - Nose
+    - RWrist
+    - LWrist
