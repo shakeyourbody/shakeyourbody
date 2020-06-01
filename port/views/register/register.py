@@ -1,3 +1,4 @@
+from time import time
 import arcade
 import csv
 
@@ -28,6 +29,7 @@ class Register(View):
     def setup(self):
         self.pose.connect()
         self.keypoints.clear()
+        self.start = time()
 
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
@@ -38,7 +40,7 @@ class Register(View):
             return
 
         x, y = coords['Nose']
-        self.keypoints.append(Point(x, y))
+        self.keypoints.append((time() - self.start, x, y))
         self.dkeypoints.append(Circle(self.width - x * self.width, y *
                                       self.height, 5).fill(120, 120, 120))
 

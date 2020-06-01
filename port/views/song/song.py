@@ -34,7 +34,7 @@ class Song(View):
         self.pose.connect()
 
         self.keypoints_spawner.clear()
-        with open(data.DATA_PATH / 'poses.csv') as poses:
+        with open(data.DATA_PATH / 'auto.csv') as poses:
             reader = csv.reader(poses, delimiter=',')
             for timestamp, x, y, in reader:
                 self.keypoints_spawner.at(
