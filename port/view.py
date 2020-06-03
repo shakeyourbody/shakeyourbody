@@ -19,8 +19,8 @@ class View(arcade.View):
     def setup(self):
         pass
 
-    def goto(self, Target, count=0):
-        target = Target(self.width, self.height)
+    def goto(self, Target, count=0, *args):
+        target = Target(self.width, self.height, *args)
         target_setupper = Thread(target=target.setup)
         target_setupper.start()
         loader = Loader(self.width, self.height, target, target_setupper)
@@ -48,7 +48,7 @@ class Loader(View):
         self.clock += elapsed
         self.dots = '.' * int((self.clock % 1) * 4)
 
-        if self.target.LOADED:
+        if self.target and self.target.LOADED:
             self.setupper.join()
             self.window.show_view(self.target)
 
@@ -73,7 +73,7 @@ class CountDown(View):
 
         if self.count <= 0:
             self.window.show_view(
-                self.loader.target if self.loader.target.LOADED else self.target)
+                self.loader.target if self.loader.target.LOADED else self.loader)
 
         self.clock += elapsed
         if self.clock >= 1:

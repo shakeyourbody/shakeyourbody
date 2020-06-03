@@ -16,3 +16,11 @@ Point = namedtuple(
     'Point',
     ['x', 'y']
 )
+
+
+filetypes = dict(
+    audio=[
+        ('audio', '*.mp3'),
+        ('audio', '*.wav')
+    ]
+)

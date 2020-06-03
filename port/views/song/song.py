@@ -49,7 +49,6 @@ class Song(View):
                 )
 
         self.song = arcade.Sound(str(data.DATA_PATH / 'audio' / 'sample.mp3'))
-
         self.LOADED = True
 
     def __keypoint_handler(self, keypoint):

@@ -9,14 +9,14 @@ from pools import DataPool
 from drawables import Circle
 from animation import animate
 from pose.sprited_pose import Pose
-from utils.types import Point
+from utils.types import Point, filetypes
 from utils.dialogs import openfile
 import data
 
 
 class Register(View):
 
-    def __init__(self, WIDTH, HEIGHT, joints_format=['Nose', 'LWrist', 'RWrist']):
+    def __init__(self, WIDTH, HEIGHT, song_path, joints_format=['Nose', 'LWrist', 'RWrist']):
         super().__init__(WIDTH, HEIGHT)
         self.pose = Pose(WIDTH, HEIGHT)
 
@@ -26,28 +26,39 @@ class Register(View):
         self.joints = None
         self.joints_sprites = None
 
+        self.song_path = song_path
+        self.song = None
+
+        self.clock = 0
+        self.pclock = self.clock
+
+        self.LOADED = False
+
     def setup(self):
+        print(self.song_path)
+        self.song = arcade.Sound(self.song_path)
         self.pose.connect()
         self.keypoints = dict()
-        self.start = time()
+        self.LOADED = True
 
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
+        self.song.play(volume=0.2)
 
     def on_update(self, elapsed):
-        self.joints_sprites, self.joints = self.pose.joints()
+        self.clock = self.song.get_stream_position()
 
+        self.joints_sprites, self.joints = self.pose.joints()
         coords, _ = self.pose.pose
         if coords is None:
             return
 
-        now = round(time() - self.start, 3)
         for joint in self.joints_format:
             if joint in coords:
                 if not joint in self.keypoints:
                     self.keypoints[joint] = DataPool()
                 self.keypoints[joint].append(
-                    (now, coords[joint]))
+                    (self.clock, coords[joint]))
 
     def on_draw(self):
         arcade.start_render()
@@ -63,3 +74,7 @@ class Register(View):
     def on_key_press(self, key, _):
         if key in mapped:
             mapped[key](self)
+
+    def goto(self, *args):
+        self.song.stop()
+        super().goto(*args)
