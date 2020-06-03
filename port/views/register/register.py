@@ -10,27 +10,23 @@ from drawables import Circle
 from animation import animate
 from pose.openpose import Pose
 from utils.types import Point
+from utils.dialogs import openfile
 from data.graphic.sprites import JOINTS_SPRITES
 import data
 
 
-@animate(Circle)
-def AnimatedCircle(self, elapsed, remaining, original):
-    self.r = 20 * remaining / original
-
-
 class Register(View):
 
-    def __init__(self, WIDTH, HEIGHT):
+    def __init__(self, WIDTH, HEIGHT, joints_format=['Nose', 'LWrist', 'RWrist']):
         super().__init__(WIDTH, HEIGHT)
         self.pose = Pose(WIDTH, HEIGHT)
-        self.keypoints = DataPool()
-        self.dkeypoints = DataPool()
+        self.keypoints = None
         self.joints_sprites = JOINTS_SPRITES
+        self.joints_format = joints_format
 
     def setup(self):
         self.pose.connect()
-        self.keypoints.clear()
+        self.keypoints = dict()
         self.start = time()
 
     def on_show(self):
@@ -41,14 +37,21 @@ class Register(View):
         if not new or coords is None:
             return
 
-        x, y = coords['Nose']
-        self.keypoints.append((time() - self.start, 1 - x, 1 - y))
-        self.dkeypoints.append(Circle(self.width - x * self.width, self.height - y *
-                                      self.height, 5).fill(120, 120, 120))
+        # formatted_keypoints = []
+        # for joint in self.joints_format:
+        #     if joint in coords:
+        #         formatted_keypoints.append(coords[joint])
+        # self.keypoints.append((time() - self.start, formatted_keypoints))
+        now = round(time() - self.start, 3)
+        for joint in self.joints_format:
+            if joint in coords:
+                if not joint in self.keypoints:
+                    self.keypoints[joint] = DataPool()
+                self.keypoints[joint].append(
+                    (now, coords[joint]))
 
     def on_draw(self):
         arcade.start_render()
-        self.dkeypoints.each(lambda keypoint: keypoint.draw())
 
     def on_key_press(self, key, _):
         if key in mapped:

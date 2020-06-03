@@ -4,7 +4,7 @@ SIMPLIFY_DELTA_MAX = 0.005
 
 
 def delta(p1, p2, at=0):
-    return math.sqrt((p1[at+0]-p2[at+0])**2 + (p1[at+1]-p2[at+1])**2)
+    return math.sqrt((p1[at][0]-p2[at][0])**2 + (p1[at][1]-p2[at][1])**2)
 
 
 class Path:
@@ -33,7 +33,7 @@ class Path:
 
             p = (ab + am + bm) / 2
             area = math.sqrt(p*(p-ab)*(p-am)*(p-bm))
-            h = 2*area/ab
+            h = 2*area/ab if ab > 0 else 0
 
             if h > SIMPLIFY_DELTA_MAX:
                 to_remove.append(i+1)
