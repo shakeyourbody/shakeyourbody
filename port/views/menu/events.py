@@ -9,6 +9,8 @@ from utils.types import filetypes
 
 def goto_register(self):
     song_path = openfile(title='Select a song', filetypes=filetypes['audio'])
+    if len(song_path) == 0:
+        return
     self.goto(Register, 3, song_path)
 
 

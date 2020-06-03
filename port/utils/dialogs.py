@@ -1,11 +1,12 @@
 from tkinter import Tk, filedialog, simpledialog
+from pathlib import Path
 import os
 
 
 def openfile(title='Select a file to open', filetypes=[('all files', '.*')]):
     Tk().withdraw()
     fname = filedialog.askopenfilename(
-        initialdir=os.getcwd(),
+        initialdir=os.getcwd(),  # Path.home(),
         title=title,
         filetypes=filetypes
     )
@@ -15,7 +16,7 @@ def openfile(title='Select a file to open', filetypes=[('all files', '.*')]):
 def savefile(title='Select a file to save', filetypes=[('all files', '.*')]):
     Tk().withdraw()
     fname = filedialog.asksaveasfile(
-        initialdir=os.getcwd(),
+        initialdir=os.getcwd(),  # Path.home(),
         title=title,
         filetypes=filetypes
     )
