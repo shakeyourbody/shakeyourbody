@@ -1,6 +1,7 @@
 import math
 
 SIMPLIFY_DELTA_MAX = 0.005
+TOO_NEAR_THRESHOLD = 0.009
 
 
 def delta(p1, p2, at=0):
@@ -13,11 +14,12 @@ class Path:
         self.points = points
         self.at = at
 
-    def reduce(self, n_at_end):
-        # TODO
-        pass
-
     def simplify(self):
+        self.remove_same()
+        self.remove_too_near()
+        self.remove_delta_too_high()
+
+    def remove_delta_too_high(self):
 
         to_remove = []
 
@@ -37,6 +39,29 @@ class Path:
 
             if h > SIMPLIFY_DELTA_MAX:
                 to_remove.append(i+1)
+
+        for i in to_remove[::-1]:
+            del self.points[i]
+
+    def remove_too_near(self):
+        to_remove = []
+
+        for i, A in enumerate(self.points[:-1]):
+            B = self.points[i+1]
+            if delta(A, B, at=self.at) < TOO_NEAR_THRESHOLD:
+                to_remove.append(i+1)
+
+        for i in to_remove[::-1]:
+            del self.points[i]
+
+    def remove_same(self):
+        to_remove = []
+
+        for i, A in enumerate(self.points[:-1]):
+            A = A[self.at]
+            B = self.points[i+1][self.at]
+            if A.x == B.x and A.y == B.y:
+                to_remove.append(i)
 
         for i in to_remove[::-1]:
             del self.points[i]
