@@ -10,6 +10,7 @@ from drawables import Circle
 from animation import animate
 from pose.openpose import Pose
 from utils.types import Point
+from data.graphic.sprites import JOINTS_SPRITES
 import data
 
 
@@ -31,6 +32,8 @@ class Song(View):
         self.clock = 0
         self.pclock = self.clock
 
+        self.joints_sprites = JOINTS_SPRITES
+
     def setup(self):
 
         self.pose.connect()
@@ -43,11 +46,6 @@ class Song(View):
                     float(timestamp), self.__keypoint_handler,
                     Point(float(x) * self.width, float(y) * self.height)
                 )
-
-        self.joints_sprites = dict(
-            nose=arcade.Sprite(data.DATA_PATH/'graphic' /
-                               'sprites'/'nose'/'nose.png', 0.04)
-        )
 
         self.song = arcade.Sound(str(data.DATA_PATH / 'audio' / 'sample.mp3'))
         self.song.play(volume=0.2)

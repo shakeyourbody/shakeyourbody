@@ -8,6 +8,7 @@ from view import View
 from drawables import Circle, Text
 from pools import DataPool, EventsPool
 from pose.openpose import Pose
+from data.graphic.sprites import JOINTS_SPRITES
 import data
 
 
@@ -17,13 +18,10 @@ class Playground(View):
         super().__init__(WIDTH, HEIGHT)
         self.pose = Pose(WIDTH, HEIGHT)
         self.joints = DataPool()
+        self.joints_sprites = JOINTS_SPRITES
 
     def setup(self):
         self.pose.connect()
-        self.joints_sprites = dict(
-            nose=arcade.Sprite(data.DATA_PATH/'graphic' /
-                               'sprites'/'nose'/'nose.png', 0.04)
-        )
 
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
@@ -33,23 +31,25 @@ class Playground(View):
         if coords is None:
             return
 
-        x, y = coords['Nose']
-        self.joints_sprites['nose'].center_x = self.width - self.width * x
-        self.joints_sprites['nose'].center_y = self.height - \
-            self.height * y * 2
-
         self.joints.clear()
         for joint in coords:
             x, y = coords[joint]
-            if joint != 'Nose' and x != 0 and y != 0:
+            if x != 0 and y != 0:
                 x = self.width - self.width * x
                 y = self.height - self.height * y * 2
-                self.joints.append(Circle(x, y, 10).fill(245, 245, 245, 10))
-                self.joints.append(Text(joint, x, y).fill(220, 220, 220))
+                if joint in self.joints_sprites:
+                    self.joints_sprites[joint].center_x = x
+                    self.joints_sprites[joint].center_y = y
+                else:
+                    self.joints.append(
+                        Circle(x, y, 10).fill(245, 245, 245, 10))
+                    self.joints.append(Text(joint, x, y).fill(220, 220, 220))
 
     def on_draw(self):
         arcade.start_render()
-        self.joints_sprites['nose'].draw()
+        for joint, sprite in self.joints_sprites.items():
+            if sprite.center_x != 0 and sprite.center_y != 0:
+                sprite.draw()
         self.joints.each(lambda joint: joint.draw())
 
     def on_key_press(self, key, modifiers):
