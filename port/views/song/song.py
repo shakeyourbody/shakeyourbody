@@ -8,7 +8,7 @@ from view import View
 from pools import DataPool, EventsPool
 from drawables import Circle
 from animation import animate
-from pose.openpose import Pose
+from pose.sprited_pose import Pose
 from utils.types import Point
 from data.graphic.sprites import JOINTS_SPRITES
 import data
@@ -32,7 +32,8 @@ class Song(View):
         self.clock = 0
         self.pclock = self.clock
 
-        self.joints_sprites = JOINTS_SPRITES
+        self.joints = None
+        self.joints_sprites = None
 
     def setup(self):
 
@@ -69,19 +70,19 @@ class Song(View):
         self.keypoints = self.keypoints.filter(
             lambda keypoint: keypoint.update(elapsed))
 
-        coords, new = self.pose.pose
-        if coords is None or not new:
-            return
-
-        x, y = coords['Nose']
-        self.joints_sprites['nose'].center_x = self.width - self.width * x
-        self.joints_sprites['nose'].center_y = self.height - \
-            self.height * y * 2     # TODO: fix camera proportions
+        self.joints_sprites, self.joints = self.pose.joints()
 
     def on_draw(self):
         arcade.start_render()
         self.keypoints.each(lambda keypoint: keypoint.draw())
-        self.joints_sprites['nose'].draw()
+
+        if self.joints is None or self.joints_sprites is None:
+            return
+
+        for joint, sprite in self.joints_sprites.items():
+            if sprite.center_x != 0 and sprite.center_y != 0:
+                sprite.draw()
+        self.joints.each(lambda joint: joint.draw())
 
     def on_key_press(self, key, modifiers):
         if key in mapped:

@@ -10,6 +10,7 @@ from drawables import Circle
 from animation import animate
 from pose.openpose import Pose
 from utils.types import Point
+from data.graphic.sprites import JOINTS_SPRITES
 import data
 
 
@@ -25,6 +26,7 @@ class Register(View):
         self.pose = Pose(WIDTH, HEIGHT)
         self.keypoints = DataPool()
         self.dkeypoints = DataPool()
+        self.joints_sprites = JOINTS_SPRITES
 
     def setup(self):
         self.pose.connect()
