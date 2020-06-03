@@ -35,8 +35,9 @@ class Song(View):
         self.joints = None
         self.joints_sprites = None
 
-    def setup(self):
+        self.LOADED = False
 
+    def setup(self):
         self.pose.connect()
 
         self.keypoints_spawner.clear()
@@ -50,6 +51,8 @@ class Song(View):
 
         self.song = arcade.Sound(str(data.DATA_PATH / 'audio' / 'sample.mp3'))
         self.song.play(volume=0.2)
+
+        self.LOADED = True
 
     def __keypoint_handler(self, keypoint):
         x, y = keypoint

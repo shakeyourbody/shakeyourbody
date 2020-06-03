@@ -1,5 +1,6 @@
 from collections import namedtuple
 import struct
+import asyncio
 
 
 def bits2float(b):
