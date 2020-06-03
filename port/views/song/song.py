@@ -10,7 +10,6 @@ from drawables import Circle
 from animation import animate
 from pose.sprited_pose import Pose
 from utils.types import Point
-from data.graphic.sprites import JOINTS_SPRITES
 import data
 
 
@@ -41,7 +40,7 @@ class Song(View):
         self.pose.connect()
 
         self.keypoints_spawner.clear()
-        with open(data.DATA_PATH / 'auto.csv') as poses:
+        with open(data.DATA_PATH / 'poses.csv') as poses:
             reader = csv.reader(poses, delimiter=',')
             for timestamp, x, y, in reader:
                 self.keypoints_spawner.at(
