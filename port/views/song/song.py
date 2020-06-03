@@ -40,22 +40,37 @@ class Song(View):
         self.pose.connect()
 
         self.keypoints_spawner.clear()
-        with open(data.DATA_PATH / 'poses.csv') as poses:
-            reader = csv.reader(poses, delimiter=',')
-            for timestamp, x, y, in reader:
+        with open(data.DATA_PATH / 'registered' / 'moves.csv') as moves:
+            reader = csv.reader(moves, delimiter=',')
+            for row in reader:
                 self.keypoints_spawner.at(
-                    float(timestamp), self.__keypoint_handler,
-                    Point(float(x) * self.width, float(y) * self.height)
-                )
+                    float(row[0]), self.__keypoint_handler, row[1:])
 
-        self.song = arcade.Sound(str(data.DATA_PATH / 'audio' / 'sample.mp3'))
+        with open(data.DATA_PATH / 'registered' / 'song.path') as song_path:
+            self.song = arcade.Sound(song_path.read())
+
         self.LOADED = True
 
-    def __keypoint_handler(self, keypoint):
-        x, y = keypoint
-        self.keypoints.append(
-            AnimatedCircle(x, y, 40, ttl=2).fill(245, 245, 245)
-        )
+    def __keypoint_handler(self, keypoints):
+
+        nosex = float(keypoints[0]) * self.width
+        nosey = float(keypoints[1]) * self.height
+        rwristx = float(keypoints[2]) * self.width
+        rwristy = float(keypoints[3]) * self.height
+        lwristx = float(keypoints[4]) * self.width
+        lwristy = float(keypoints[5]) * self.height
+
+        if nosex != 0 and nosey != 0:
+            self.keypoints.append(AnimatedCircle(
+                nosex, nosey, 40, ttl=2).fill(245, 245, 245))
+
+        if rwristx != 0 and rwristy != 0:
+            self.keypoints.append(AnimatedCircle(
+                rwristx, rwristy, 40, ttl=2).fill(245, 245, 245))
+
+        if lwristx != 0 and lwristy != 0:
+            self.keypoints.append(AnimatedCircle(
+                lwristx, lwristy, 40, ttl=2).fill(245, 245, 245))
 
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
