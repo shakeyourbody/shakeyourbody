@@ -35,7 +35,6 @@ class Register(View):
         self.LOADED = False
 
     def setup(self):
-        print(self.song_path)
         self.song = arcade.Sound(self.song_path)
         self.pose.connect()
         self.keypoints = dict()

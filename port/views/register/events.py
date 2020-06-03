@@ -1,5 +1,6 @@
 import arcade
 import csv
+import os
 
 from utils import chain
 from path import Path
@@ -19,7 +20,11 @@ def save(self):
                 combined[timestamp] = dict()
             combined[timestamp][joint] = point
 
-    with open(DATA_PATH / 'auto.csv', 'w') as moves:
+    folder = DATA_PATH / 'registered'
+    if not os.path.isdir(str(folder)):
+        os.mkdir(str(folder))
+
+    with open(folder / 'moves.csv', 'w') as moves:
         writer = csv.writer(moves, delimiter=',')
         rows = []
         for timestamp, joints in combined.items():
@@ -35,6 +40,9 @@ def save(self):
                 rows.append(row)
         rows.sort(key=lambda row: row[0])
         writer.writerows(rows)
+
+    with open(folder / 'song.path', 'w') as song:
+        song.write(self.song_path)
 
 
 def to_menu(self):
