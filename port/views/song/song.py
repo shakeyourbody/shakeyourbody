@@ -28,6 +28,9 @@ class Song(View):
         self.keypoints_spawner = EventsPool()
         self.keypoints = DataPool()
 
+        self.clock = 0
+        self.pclock = self.clock
+
     def setup(self):
 
         self.pose.connect()
@@ -46,6 +49,9 @@ class Song(View):
                                'sprites'/'nose'/'nose.png', 0.04)
         )
 
+        self.song = arcade.Sound(str(data.DATA_PATH / 'audio' / 'sample.mp3'))
+        self.song.play(volume=0.2)
+
     def __keypoint_handler(self, keypoint):
         x, y = keypoint
         self.keypoints.append(
@@ -55,7 +61,12 @@ class Song(View):
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
 
-    def on_update(self, elapsed):
+    def on_update(self, arcade_elapsed):
+
+        self.clock = self.song.get_stream_position()
+        elapsed = self.clock - self.pclock
+        self.pclock = self.clock
+
         self.keypoints_spawner.update(elapsed)
         self.keypoints = self.keypoints.filter(
             lambda keypoint: keypoint.update(elapsed))
@@ -77,3 +88,7 @@ class Song(View):
     def on_key_press(self, key, modifiers):
         if key in mapped:
             mapped[key](self)
+
+    def goto(self, *args):
+        self.song.stop()
+        super().goto(*args)

@@ -56,7 +56,7 @@ class Pose:
         self.__joints = JOINTS[POSE_SET]
 
         # TODO: normalize joints position in openpose client code
-        self.WDITH = WIDTH
+        self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
 
         RUNNING_POSES.append(self)
@@ -84,7 +84,7 @@ class Pose:
                 self.__pose = parse_buffer_manually(
                     buffer,
                     self.__joints,
-                    self.WDITH,
+                    self.WIDTH,
                     self.HEIGHT
                 )
             except socket.timeout:
