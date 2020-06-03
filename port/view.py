@@ -19,12 +19,17 @@ class View(arcade.View):
     def setup(self):
         pass
 
-    def goto(self, Target):
+    def goto(self, Target, count=0):
         target = Target(self.width, self.height)
         target_setupper = Thread(target=target.setup)
         target_setupper.start()
         loader = Loader(self.width, self.height, target, target_setupper)
-        self.window.show_view(loader)
+
+        if count <= 0:
+            self.window.show_view(loader)
+        else:
+            counter = CountDown(self.width, self.height, count, loader)
+            self.window.show_view(counter)
 
 
 class Loader(View):
@@ -51,3 +56,31 @@ class Loader(View):
         arcade.start_render()
         arcade.draw_text(f"loading{self.dots}", self.width/2, self.height/2, (245, 245, 245),
                          font_size=10, anchor_x="center", anchor_y="center")
+
+
+class CountDown(View):
+
+    def __init__(self, WIDTH, HEIGHT, count, loader):
+        super().__init__(WIDTH, HEIGHT)
+        self.count = count
+        self.clock = 0
+        self.loader = loader
+
+    def on_show(self):
+        arcade.set_background_color((35, 43, 43))
+
+    def on_update(self, elapsed):
+
+        if self.count <= 0:
+            self.window.show_view(
+                self.loader.target if self.loader.target.LOADED else self.target)
+
+        self.clock += elapsed
+        if self.clock >= 1:
+            self.clock = 0
+            self.count -= 1
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text(f'{self.count}', self.width/2, self.height/2, (245, 245, 245),
+                         font_size=40, anchor_x='center', anchor_y='center')

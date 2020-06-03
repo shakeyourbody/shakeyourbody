@@ -50,7 +50,6 @@ class Song(View):
                 )
 
         self.song = arcade.Sound(str(data.DATA_PATH / 'audio' / 'sample.mp3'))
-        self.song.play(volume=0.2)
 
         self.LOADED = True
 
@@ -62,6 +61,7 @@ class Song(View):
 
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
+        self.song.play(volume=0.2)
 
     def on_update(self, arcade_elapsed):
 
