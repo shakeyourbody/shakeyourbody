@@ -2,7 +2,7 @@ import arcade
 import csv
 import math
 
-from .events import mapped
+from .events import mapped, to_menu
 
 from view import View
 from pools import DataPool, EventsPool
@@ -93,6 +93,7 @@ class Song(View):
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
         self.song.play(volume=0.2)
+        self.prev_stream_position = -1
 
     def on_update(self, arcade_elapsed):
 
@@ -105,6 +106,12 @@ class Song(View):
             lambda keypoint: keypoint.update(elapsed))
 
         self.joints_sprites, self.joints = self.pose.joints()
+
+        stream_position = self.song.get_stream_position()
+        if stream_position == 0 and self.prev_stream_position == 0:
+            to_menu(self)
+        else:
+            self.prev_stream_position = stream_position
 
     def on_draw(self):
         arcade.start_render()

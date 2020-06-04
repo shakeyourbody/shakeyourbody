@@ -2,7 +2,7 @@ from time import time
 import arcade
 import csv
 
-from .events import mapped
+from .events import mapped, save, to_menu
 
 from view import View
 from pools import DataPool
@@ -43,9 +43,15 @@ class Register(View):
     def on_show(self):
         arcade.set_background_color((15, 15, 15))
         self.song.play(volume=0.2)
+        self.prev_stream_position = -1
 
     def on_update(self, elapsed):
         self.clock = self.song.get_stream_position()
+        if self.clock == 0 and self.prev_stream_position == 0:
+            save(self)
+            to_menu(self)
+        else:
+            self.prev_stream_position = self.clock
 
         self.joints_sprites, self.joints = self.pose.joints()
         coords, _ = self.pose.pose
