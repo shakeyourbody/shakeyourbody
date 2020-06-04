@@ -14,10 +14,18 @@ def goto_register(self):
     self.goto(Register, 3, song_path)
 
 
+def goto_song(self):
+    self.goto(Song, 3)
+
+
+def goto_playground(self):
+    self.goto(Playground)
+
+
 mapped = dict([
     (arcade.key.ESCAPE, lambda *_: arcade.close_window()),
     (arcade.key.F, lambda view, *_: view.window.toggle_fullscreen()),
-    (arcade.key.ENTER, lambda view, *_: view.goto(Song, 3)),
+    (arcade.key.ENTER, goto_song),
     (arcade.key.R, goto_register),
-    (arcade.key.P, lambda view, *_: view.goto(Playground))
+    (arcade.key.P, goto_playground)
 ])

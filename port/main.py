@@ -14,6 +14,7 @@ FULLSCREEN = config['window']['fullscreen']
 def main():
     window = Window(WIDTH, HEIGHT, TITLE, fullscreen=FULLSCREEN)
     menu = Menu(WIDTH, HEIGHT)
+    menu.setup()
     window.show_view(menu)
     arcade.run()
 
