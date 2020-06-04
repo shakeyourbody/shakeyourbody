@@ -68,6 +68,16 @@ class Register(View):
     def on_draw(self):
         arcade.start_render()
 
+        # Time bar
+        width = self.width * self.clock / self.song.get_length()
+        height = 10
+        arcade.draw_xywh_rectangle_filled(
+            0, self.height - height,
+            width, height,
+            (245, 245, 245)
+        )
+
+        # joints stuff
         if self.joints is None or self.joints_sprites is None:
             return
 
