@@ -10,12 +10,14 @@ from drawables import Circle
 from animation import animate
 from pose.sprited_pose import Pose
 from utils.types import Point
+from score import Score
+from path import delta
 import data
 
 
 @animate(Circle)
 def AnimatedCircle(self, elapsed, remaining, original):
-    self.r = 40 * remaining / original
+    self.r = 5 * remaining / original
 
 
 class Song(View):
@@ -24,6 +26,7 @@ class Song(View):
         super().__init__(WIDTH, HEIGHT)
 
         self.pose = Pose(WIDTH, HEIGHT)
+        self.score = Score()
 
         self.keypoints_spawner = EventsPool()
         self.keypoints = DataPool()
@@ -62,15 +65,30 @@ class Song(View):
 
         if nosex != 0 and nosey != 0:
             self.keypoints.append(AnimatedCircle(
-                nosex, nosey, 40, ttl=2).fill(245, 245, 245))
+                nosex, nosey, 40, ttl=0.5, on_end=self.__animation_end_handler, name='Nose').fill(245, 245, 245))
 
         if rwristx != 0 and rwristy != 0:
             self.keypoints.append(AnimatedCircle(
-                rwristx, rwristy, 40, ttl=2).fill(245, 245, 245))
+                rwristx, rwristy, 40, ttl=0.5, on_end=self.__animation_end_handler, name='RWrist').fill(245, 245, 245))
 
         if lwristx != 0 and lwristy != 0:
             self.keypoints.append(AnimatedCircle(
-                lwristx, lwristy, 40, ttl=2).fill(245, 245, 245))
+                lwristx, lwristy, 40, ttl=0.5, on_end=self.__animation_end_handler, name='LWrist').fill(245, 245, 245))
+
+    def __animation_end_handler(self, animated):
+        joint = animated.name
+        kx = animated.x
+        ky = animated.y
+
+        if self.joints_sprites is None or not joint in self.joints_sprites:
+            return
+
+        player_joint = self.joints_sprites[joint]
+        px = player_joint.center_x
+        py = player_joint.center_y
+
+        dist = delta((kx, ky), (px, py))
+        self.score.step(dist)
 
     def on_show(self):
         arcade.set_background_color((15, 15, 15))

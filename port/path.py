@@ -4,8 +4,8 @@ SIMPLIFY_DELTA_MAX = 0.005
 TOO_NEAR_THRESHOLD = 0.009
 
 
-def delta(p1, p2, at=0):
-    return math.sqrt((p1[at][0]-p2[at][0])**2 + (p1[at][1]-p2[at][1])**2)
+def delta(p1, p2):
+    return math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
 
 
 class Path:
@@ -29,9 +29,9 @@ class Path:
             B = self.points[i+1]
             M = self.points[i]
 
-            ab = delta(A, B, at=self.at)
-            am = delta(A, M, at=self.at)
-            bm = delta(B, M, at=self.at)
+            ab = delta(A[self.at], B[self.at])
+            am = delta(A[self.at], M[self.at])
+            bm = delta(B[self.at], M[self.at])
 
             p = (ab + am + bm) / 2
             area = math.sqrt(p*(p-ab)*(p-am)*(p-bm))
@@ -48,7 +48,7 @@ class Path:
 
         for i, A in enumerate(self.points[:-1]):
             B = self.points[i+1]
-            if delta(A, B, at=self.at) < TOO_NEAR_THRESHOLD:
+            if delta(A[self.at], B[self.at]) < TOO_NEAR_THRESHOLD:
                 to_remove.append(i+1)
 
         for i in to_remove[::-1]:

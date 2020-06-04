@@ -17,10 +17,11 @@ class Drawable:
 
 class Circle(Drawable):
 
-    def __init__(self, x, y, r):
+    def __init__(self, x, y, r, name=None):
         self.x = x
         self.y = y
         self.r = r
+        self.name = name
 
     def draw(self):
         arcade.draw_circle_filled(self.x, self.y, self.r, self._fillv)
