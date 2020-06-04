@@ -1,11 +1,10 @@
 import arcade
 
-from .events import mapped
+from .events import mapped, goto_song, goto_register, goto_playground
 
 from view import View
 from config import colors
 from data import DATA_PATH
-from .events import goto_song, goto_register, goto_playground
 colors = colors['menu']
 
 

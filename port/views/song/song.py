@@ -2,7 +2,7 @@ import arcade
 import csv
 import math
 
-from .events import mapped, to_menu
+from .events import mapped, to_score
 
 from view import View
 from pools import DataPool, EventsPool
@@ -109,7 +109,7 @@ class Song(View):
 
         stream_position = self.song.get_stream_position()
         if stream_position == 0 and self.prev_stream_position == 0:
-            to_menu(self)
+            to_score(self)
         else:
             self.prev_stream_position = stream_position
 
@@ -131,4 +131,5 @@ class Song(View):
 
     def goto(self, *args):
         self.song.stop()
+        self.pose.stop()
         super().goto(*args)
