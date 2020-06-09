@@ -40,3 +40,11 @@ You can import them in the game and find the registered ones in your game folder
 
 
 ## Installation process
+
+The first you have to do is compile OpenPose with our [user code](https://github.com/shakeyourbody/openpose_client). Refer to the [official documentation](https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation.md) for that. Soon or later we'll find time to package OpenPose with our builds.
+
+Then go to our [releases](https://github.com/shakeyourbody/shakeyourbody/releases/) and get the right build for your operating system. 
+
++ `x11` - Linux, *BSD: download the `X11.tar.xz` archive, extract it and run the `shakeyoubody` script.
++ `win64` - Windows 64bit: download the `win64.zip` archive, extract it and run `shakeyoubody.exe`.
+

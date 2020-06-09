@@ -10,7 +10,7 @@
   + [How it works](./docs/game.md#how-it-works)
   + [Score](./docs/game.md#score)
   + [Sharing packed songs](./docs/game.md#sharing-packed-songs)
-  + [Installation process](./docs/game.md#installation-process) [[[ todo ]]]
+  + [Installation process](./docs/game.md#installation-process)
 + [Technologies](./docs/tech.md)
   + [OpenPose](./docs/tech.md#OpenPose)
   + [Processing, Python, Godot: a tale of engines](./docs/tech.md#game-engine)
