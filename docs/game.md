@@ -37,6 +37,11 @@ We package songs & moves data as renamed `.zip` files: `.shyb`.
 
 You can import them in the game and find the registered ones in your game folder.
 
+The game store registered and imported songs in the following folders:
+
++ linux: `~/.local/share/godot/shakeyourbody`
++ windows: `%APPDATA%\Godot\shakeyourbody`
+
 
 
 ## Installation process
