@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Pose/Pose.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Joints/Joints.cs" type="Script" id=2]
+[ext_resource path="res://Assets/sprites/nose/nose.svg" type="Texture" id=3]
+[ext_resource path="res://Assets/sprites/hands/hand.svg" type="Texture" id=4]
+
+[node name="Joints" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Nose" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="Nose"]
+texture = ExtResource( 3 )
+
+[node name="RWrist" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="RWrist"]
+texture = ExtResource( 4 )
+
+[node name="LWrist" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="LWrist"]
+texture = ExtResource( 4 )
+flip_h = true
+
+[node name="Pose" parent="." instance=ExtResource( 1 )]
