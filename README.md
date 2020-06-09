@@ -24,6 +24,8 @@ We are a little and ever-changing group of students. We come from the robotics a
 + Alessia De Giovannini -  :octocat: [@AleDegio](https://github.com/AleDegio)
 + Pietro Jomini -  :octocat: [@PietroJomini](https://github.com/PietroJomini)
 
+We'll hopefully keep working on this project, follow our progress on [trello](https://trello.com/b/SmyCME3d/shakeyourbody) and [github](https://github.com/shakeyourbody/shakeyourbody/)
+
 
 
 ### Thanks to
