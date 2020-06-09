@@ -126,8 +126,8 @@ mode_overrides_title = false
 mode = 0
 access = 2
 filters = PoolStringArray( "*.wav" )
-current_dir = "/home/popaii/Documents/shakeyourbody_godot"
-current_path = "/home/popaii/Documents/shakeyourbody_godot/"
+current_dir = "/home/popaii/Documents/shakeyourbody/src"
+current_path = "/home/popaii/Documents/shakeyourbody/src/"
 
 [node name="ImportDialog" type="FileDialog" parent="."]
 margin_left = 160.0
@@ -139,8 +139,8 @@ mode_overrides_title = false
 mode = 0
 access = 2
 filters = PoolStringArray( "*.shyb" )
-current_dir = "/home/popaii/Documents/shakeyourbody_godot"
-current_path = "/home/popaii/Documents/shakeyourbody_godot/"
+current_dir = "/home/popaii/Documents/shakeyourbody/src"
+current_path = "/home/popaii/Documents/shakeyourbody/src/"
 [connection signal="mouse_entered" from="ColorRect/TextureRect/Register" to="." method="OnSideMouseEnteredTop"]
 [connection signal="mouse_exited" from="ColorRect/TextureRect/Register" to="." method="OnSideMouseExited"]
 [connection signal="pressed" from="ColorRect/TextureRect/Register" to="." method="Register"]

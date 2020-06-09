@@ -19,7 +19,7 @@ public class SongsManager : Node
         userData.Open("user://");
         userData.ListDirBegin();
         while ((song = userData.GetNext()) != "") 
-            if (song != "." && song != ".." && song != "media") songs.Add(song);
+            if (song != "." && song != ".." && song != "mono") songs.Add(song);
         userData.ListDirEnd();
         return songs;
     }
