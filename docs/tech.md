@@ -16,3 +16,5 @@ We struggled with the choice of a proper game engine. At first we didn't even us
 
 So we finally made up our minds for [Godot engine](https://godotengine.org/), learned some c# and jumped into the world of the big engines.
 
+The history of our unsuccessful attempt at using a minimalist engine can be found at [this branch](https://github.com/shakeyourbody/shakeyourbody/tree/old_python) 
+
