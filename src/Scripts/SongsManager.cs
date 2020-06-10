@@ -45,7 +45,6 @@ public class SongsManager : Node
 
         float[] countsLine = { noseMoves.Count, rWristMoves.Count, lWristMoves.Count };
         song.StoreLine(string.Join(":", countsLine));
-        GD.Print(string.Join(":", countsLine));
         
         noseMoves.AddRange(rWristMoves);
         noseMoves.AddRange(lWristMoves);

@@ -133,8 +133,6 @@ public class Play : Node
         DisplayScore scene = (DisplayScore) target.Instance();
         scene.Score = Math.Round(Score.Percent * 100).ToString();
 
-        // GD.Print(Score.Percent * 100);
-
         for (int i = 0; i < GetChildCount(); i += 1) GetChild(i).QueueFree();
         QueueFree();
         GetTree().Root.AddChild(scene);

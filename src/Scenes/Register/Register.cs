@@ -29,7 +29,6 @@ public class Register : Node
         if (!Paused)
         {
             _Clock += delta;
-            GD.Print(delta);
             if (_Clock >= 3)
             {
                 _NoseMoves.Add(new PathManager.TimedPathNode(_Coords.Nose, _Clock));
