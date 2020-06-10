@@ -100,5 +100,6 @@ public class Menu : Control
     public void Cleanup()
     {
         for (int i = 0; i < GetChildCount(); i += 1) GetChild(i).QueueFree();
+        QueueFree();
     }
 }
